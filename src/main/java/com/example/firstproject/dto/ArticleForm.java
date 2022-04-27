@@ -1,5 +1,7 @@
 package com.example.firstproject.dto;
 
+import com.example.firstproject.entity.Article;
+
 public class ArticleForm {
     
     private String title;
@@ -23,4 +25,8 @@ public class ArticleForm {
                 '}';
     }
 
+    public Article toEntity() {
+        return new Article(null, title, content);
+        //반환해줌 뭐를? Article entity 객체 
+    }
 }
