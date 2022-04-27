@@ -12,7 +12,12 @@ repositories {
 	mavenCentral()
 }
 
+//도구들 삽입
 dependencies {
+	// 롬복 추가!, 코끼리 새로고침 ㅋㅋ
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
