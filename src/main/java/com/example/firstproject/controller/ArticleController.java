@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -59,5 +60,23 @@ public class ArticleController {
 
         //3. 보여줄 페이지를 설정!
         return "articles/show";
+    }
+
+    @GetMapping("/articles")
+    public String index(Model model){
+        // 1. 모든 Article을 가져온다!
+        // 데이터 타입이 맞지않아 빨간줄 뜨는데 해결방법 3가지
+        // 1. 우리에게 익숙한 Array List 사용
+        List<Article> articleEntityList = articleRepository.findAll();
+        // 2. Iterable 타입으로 맞춰준다.
+        // Iterable<Article> articleEntityList = articleRepository.findAll();
+        // 3. 캐스팅 해주는 방법.
+        // List<Article> articleEntityList = (List<Article>)articleRepository.findAll();
+
+        // 2. 가져온 Article 묶음을 뷰로 전달!
+        model.addAttribute("articleList", articleEntityList);
+
+        // 3. 뷰 페이지를 설정!
+        return "articles/index"; // articles/index.mustache
     }
 }
