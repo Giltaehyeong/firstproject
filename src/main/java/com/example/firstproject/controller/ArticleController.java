@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -67,6 +68,7 @@ public class ArticleController {
         // 1. 모든 Article을 가져온다!
         // 데이터 타입이 맞지않아 빨간줄 뜨는데 해결방법 3가지
         // 1. 우리에게 익숙한 Array List 사용
+
         List<Article> articleEntityList = articleRepository.findAll();
         // 2. Iterable 타입으로 맞춰준다.
         // Iterable<Article> articleEntityList = articleRepository.findAll();
@@ -90,5 +92,25 @@ public class ArticleController {
 
         // 뷰 페이지 설정
         return "articles/edit";
+    }
+
+    @PostMapping("/articles/update")
+    public String update(ArticleForm form){
+        log.info(form.toString());
+        // 1: DTO를 엔티티로 변환한다!
+        Article articleEntity = form.toEntity();
+        log.info(articleEntity.toString());
+
+        // 2: 엔티티를 DB로 저장한다!
+        // 2-1: DB에 기존 데이터를 가져온다!
+        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+
+        // 2-2: 기존 데이터에 값을 갱신한다!
+        if(target != null){
+            articleRepository.save(articleEntity); // 엔티티가 DB로 갱신!
+        }
+
+        // 3: 수정 결과 페이지로 리다이렉트 한다!
+        return "redirect:/articles/" + articleEntity.getId();
     }
 }
